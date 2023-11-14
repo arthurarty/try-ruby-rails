@@ -1,0 +1,63 @@
+repos:
+  # General Linter
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v3.2.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
+      - id: check-case-conflict
+  # Python Specific linter
+  - repo: https://github.com/ambv/black
+    rev: 23.10.1
+    hooks:
+      - id: black
+        language_version: python3
+        exclude: /migrations
+  - repo: https://github.com/pycqa/flake8
+    rev: 6.0.0
+    hooks:
+      - id: flake8
+        exclude: /migrations
+  # Linter for JS and TypeScript
+  # Requires npm to be installed
+  # Requires a .eslintrc.json config to be present
+  # Can create one using  npm init @eslint/config
+  -   repo: https://github.com/pre-commit/mirrors-eslint
+      rev: v8.53.0
+      hooks:
+      -   id: eslint
+          files: \.[jt]sx?$  # *.js, *.jsx, *.ts and *.tsx
+          types: [file]
+  # Linter for PHP
+  # Requires composer installed.
+  # Install the php_codesniffer lib
+  # like this `composer require --dev squizlabs/php_codesniffer`
+  - repo: local
+    hooks:
+      - id: php-codesniffer
+        name: PHP CodeSniffer
+        entry: vendor/bin/phpcs
+        files: \.(php|blade)$
+        language: system
+        types: [php]
+  # Linter for GO. Does the same as `golangci-lint run`
+  # Requires installation of golangci
+  # See docs - https://golangci-lint.run/usage/install/
+  - repo: https://github.com/dnephin/pre-commit-golang
+    rev: v0.5.1
+    hooks:
+    - id: golangci-lint
+  # Linter for Ruby.
+  # Uses the RuboCop linter - https://rubocop.org/
+  # Install rubocop for this linter to work
+  - repo: https://github.com/mattlqx/pre-commit-ruby
+    rev: v1.3.5
+    hooks:
+    - id: rubocop
+      exclude: ^Gemfile
+    # - id: foodcritic
+    # - id: cookstyle
+    # - id: rspec
+    # - id: chef-cookbook-version
